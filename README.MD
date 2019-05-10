@@ -1,4 +1,4 @@
-# Sengage WebService
+# FortniteStandings WebService
 
 This project uses the AWS Serverless Model (SAM)
 
@@ -23,7 +23,7 @@ mvn test
 ## Deploying to AWS
 sam package --template-file template.yaml --s3-bucket deployment-us-east-1-lambdas-1 --output-template-file packaged.yaml
 
-sam deploy --template-file ./packaged.yaml --stack-name sengage-webservice --capabilities CAPABILITY_IAM --parameter-overrides DeploymentStage=Beta
+sam deploy --template-file ./packaged.yaml --stack-name fortnite-wc-standings --capabilities CAPABILITY_IAM
 
 ###
 misc
