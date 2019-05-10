@@ -1,19 +1,16 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Sengage WebService
+  Fortnite Standings Thin WebService
 
-  SAM Template for Sengage WebService that has the DynamoDB table and Lambda
-  functions needed to demonstrate the Websocket protocol on API Gateway.
 
 Globals:
   Function:
     Environment:
       Variables:
         ExtensionOwnerTwitchId: "79606633"
-        ClientId: "cdawvhusl1d795u9lddads9w0ar7w9"
+        ClientId: "3wzomqpieq4jiyl0ivzjd2ajrewp5s"
         ExtensionVersion: "0.0.1"
-        TableName: "Connections"
 
 Parameters:
   DeploymentStage:
