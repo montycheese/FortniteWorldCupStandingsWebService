@@ -5,19 +5,19 @@ import java.util.regex.Pattern;
 
 import javax.inject.Singleton;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapterFactory;
 
-import io.sengage.webservice.function.GetExtensionData;
-import io.sengage.webservice.function.PutExtensionData;
-import io.sengage.webservice.function.UpdateGameState;
-import io.sengage.webservice.model.GameSpecificState;
+import io.sengage.webservice.function.GetStandings;
+import io.sengage.webservice.function.PutStandings;
+import io.sengage.webservice.persistence.DDBStandingDataProvider;
+import io.sengage.webservice.persistence.StandingDataProvider;
 import io.sengage.webservice.router.LambdaRouter;
 import io.sengage.webservice.router.Resource;
-import io.sengage.webservice.sengames.model.SendLineRequest;
 import io.sengage.webservice.utils.gson.InstantTypeConverter;
-import io.sengage.webservice.utils.gson.RuntimeTypeAdapterFactory;
 import dagger.Module;
 import dagger.Provides;
 
@@ -30,28 +30,44 @@ public class BaseModule {
 	static LambdaRouter provideLambdaRouter() {
 		return new LambdaRouter()
 		    .registerActivity(Resource.builder()
-		    		.className(UpdateGameState.class.getName())
-		    		.httpMethod("POST")
-		    		.pattern(Pattern.compile("^/game/([^\\/]*)$"))
+		    		.className(GetStandings.class.getName())
+		    		.httpMethod("GET")
+		    		.pattern(Pattern.compile("^/standings$"))
+		    		.build())
+		    .registerActivity(Resource.builder()
+		    		.className(PutStandings.class.getName())
+		    		.httpMethod("PUT")
+		    		.pattern(Pattern.compile("^/standings$"))
 		    		.build());
 	}
 	
 	@Provides
 	@Singleton
-	static Gson provideGson(TypeAdapterFactory typeAdapterFactory) {
+	static Gson provideGson() {
 		return new GsonBuilder()
 		.registerTypeAdapter(Instant.class, new InstantTypeConverter())
-		.registerTypeAdapterFactory(typeAdapterFactory)
 		.serializeNulls()
 		.create();
 	}
 	
 	@Provides
 	@Singleton
-	static TypeAdapterFactory provideRuntimeAdapterFactory() {
-		return RuntimeTypeAdapterFactory
-				.of(GameSpecificState.class, "type")
-				.registerSubtype(SendLineRequest.class, "SendLineRequest");
+	static StandingDataProvider provideStandingDataProvider(DynamoDBMapper mapper) {
+		return new DDBStandingDataProvider(mapper);
 	}
+	
+	@Provides
+	@Singleton
+	static DynamoDBMapper provideDynamoDBMapper(AmazonDynamoDB ddb) {
+		return new DynamoDBMapper(ddb);
+	}
+	
+	@Provides
+	@Singleton
+	static AmazonDynamoDB provideDynamoDB() {
+		return AmazonDynamoDBClientBuilder.defaultClient();
+	}
+	
+	
 
 }
