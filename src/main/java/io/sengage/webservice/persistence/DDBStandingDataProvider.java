@@ -26,6 +26,12 @@ public class DDBStandingDataProvider implements StandingDataProvider {
 	@Override
 	public void setStandings(List<Standing> standings) {
 		List<FailedBatch> failed = mapper.batchWrite(standings, Arrays.asList());
+		for (FailedBatch batch: failed) {
+			System.out.println("Size: " + batch.getUnprocessedItems().entrySet().size());
+			batch.getException().printStackTrace();
+			
+			
+		}
 		System.out.println("Failed to write: " + failed.size() + " number of entries. Failed: " + failed);
 	}
 	

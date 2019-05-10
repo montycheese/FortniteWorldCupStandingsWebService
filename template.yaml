@@ -13,7 +13,7 @@ Globals:
         ExtensionVersion: "0.0.1"
 
 Resources:
-  ConnectionsTable:
+  StandingsTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -31,14 +31,14 @@ Resources:
         WriteCapacityUnits: 1
       TableName: Standings
       GlobalSecondaryIndexes:
-        - IndexName: "opaqueUserId-channelId"
+        - IndexName: "WeekRegion-Rank-Index"
           KeySchema:
             - AttributeName: WeekRegion
               KeyType: HASH
             - AttributeName: Rank
               KeyType: RANGE
           Projection:
-            ProjectionType: All
+            ProjectionType: ALL
           ProvisionedThroughput:
             ReadCapacityUnits: "5"
             WriteCapacityUnits: "1"
@@ -84,6 +84,13 @@ Resources:
             - logs:PutLogEvents
             - logs:DescribeLogStream
             - cloudwatch:PutMetricData
+            - dynamodb:DeleteItem
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:UpdateItem
+            - dynamodb:BatchWriteItem
             Resource: "*"
 
 Outputs:
