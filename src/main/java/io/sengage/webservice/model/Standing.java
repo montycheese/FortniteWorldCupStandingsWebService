@@ -6,11 +6,15 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedEnum;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Builder(toBuilder=true)
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @DynamoDBTable(tableName = Standing.TABLE_NAME)
 public class Standing {
 	public static final String TABLE_NAME = "Standings";

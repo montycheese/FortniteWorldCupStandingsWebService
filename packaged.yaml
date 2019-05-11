@@ -3,6 +3,11 @@ Description: 'Fortnite Standings Thin WebService
 
   '
 Globals:
+  Api:
+    Cors:
+      AllowHeaders: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'''
+      AllowMethods: '''GET,HEAD,POST,PUT,OPTIONS,PATCH'''
+      AllowOrigin: '''*'''
   Function:
     Environment:
       Variables:
@@ -51,7 +56,7 @@ Resources:
     Type: AWS::IAM::Role
   LambdaFunction:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/f9f7e52ed321d1f2894258d71bdd8469
+      CodeUri: s3://deployment-us-east-1-lambdas-1/811331bc1d7ca2dd5da045707ab4ab29
       Events:
         FortniteApi:
           Properties:
@@ -66,7 +71,7 @@ Resources:
         - DefaultLambdaInvocationRole
         - Arn
       Runtime: java8
-      Timeout: 30
+      Timeout: 900
     Type: AWS::Serverless::Function
   StandingsTable:
     Properties:

@@ -36,7 +36,7 @@ public class PutStandings extends BaseLambda<ServerlessInput, ServerlessOutput> 
 	@Override
 	public ServerlessOutput handleRequest(ServerlessInput serverlessInput, Context context) {
 		logger = context.getLogger();
-		logger.log("PutStandings() input:" + serverlessInput);
+		logger.log("PutStandings() input:" + serverlessInput.getBody());
 		
 		PutStandingsRequest standings = gson.fromJson(serverlessInput.getBody(), PutStandingsRequest.class);
 
@@ -44,7 +44,6 @@ public class PutStandings extends BaseLambda<ServerlessInput, ServerlessOutput> 
 			standing.setWeekRegion(String.format("%d-%s", standing.getWeek(), standing.getRegion().name()));
 			standing.setId(UUID.randomUUID().toString());
 		}
-		logger.log(standings.toString());
 		standingDataProvider.setStandings(standings.getStandings());
 		
 		return ServerlessOutput.builder()

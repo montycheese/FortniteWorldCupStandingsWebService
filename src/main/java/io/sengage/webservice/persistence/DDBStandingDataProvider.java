@@ -48,6 +48,7 @@ public class DDBStandingDataProvider implements StandingDataProvider {
 				.withScanIndexForward(true)
 				.withKeyConditionExpression(keyConditionalExpression)
 				.withExpressionAttributeValues(eav)
+				.withConsistentRead(false)
 				.withLimit(100);
 		
 	    QueryResultPage<Standing> queryResult = mapper.queryPage(Standing.class, query);
@@ -69,7 +70,7 @@ public class DDBStandingDataProvider implements StandingDataProvider {
 	}
 	
 	private String getWeekRegion(int week, Region region) {
-		return String.format("%d-%s", Integer.toString(week), region.name());
+		return String.format("%d-%s", week, region.name());
 	}
 
 }
