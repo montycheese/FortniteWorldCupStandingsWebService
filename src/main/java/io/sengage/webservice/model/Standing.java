@@ -21,8 +21,10 @@ public class Standing {
 	public static final String WEEK_REGION_RANK_INDEX = "WeekRegion-Rank-Index";
 	public static final String WEEK_REGION_ATTR_NAME = "WeekRegion";
 	public static final String RANK_ATTR_NAME = "Rank";
-	@DynamoDBHashKey
-	private String id;
+	public static final String WEEK_REGION_NAME_ATTR_NAME = "WeekRegionName";
+	
+	@DynamoDBHashKey(attributeName = WEEK_REGION_NAME_ATTR_NAME)
+	private String weekRegionName;
 	@DynamoDBIndexRangeKey(globalSecondaryIndexName = WEEK_REGION_RANK_INDEX, attributeName = RANK_ATTR_NAME)
 	private int rank;
 	private int points;
@@ -36,5 +38,7 @@ public class Standing {
 	private String name2;
 	@DynamoDBIndexHashKey(globalSecondaryIndexName = WEEK_REGION_RANK_INDEX, attributeName = WEEK_REGION_ATTR_NAME)
 	private String weekRegion;
+	
+	private int delta;
 	
 }
