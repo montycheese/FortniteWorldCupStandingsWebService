@@ -20,7 +20,7 @@ public class Standing {
 	public static final String TABLE_NAME = "Standings";
 	public static final String WEEK_REGION_RANK_INDEX = "WeekRegion-Rank-Index";
 	public static final String WEEK_REGION_ATTR_NAME = "WeekRegion";
-	public static final String RANK_ATTR_NAME = "Rank";
+	public static final String RANK_ATTR_NAME = "StandingRank";
 	public static final String WEEK_REGION_NAME_ATTR_NAME = "WeekRegionName";
 	
 	@DynamoDBHashKey(attributeName = WEEK_REGION_NAME_ATTR_NAME)

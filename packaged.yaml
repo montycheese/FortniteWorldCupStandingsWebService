@@ -56,7 +56,7 @@ Resources:
     Type: AWS::IAM::Role
   LambdaFunction:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/811331bc1d7ca2dd5da045707ab4ab29
+      CodeUri: s3://deployment-us-east-1-lambdas-1/0543e5c066d56b325a10e48cb24222ad
       Events:
         FortniteApi:
           Properties:
@@ -76,18 +76,18 @@ Resources:
   StandingsTable:
     Properties:
       AttributeDefinitions:
-      - AttributeName: id
+      - AttributeName: WeekRegionName
         AttributeType: S
       - AttributeName: WeekRegion
         AttributeType: S
-      - AttributeName: Rank
+      - AttributeName: StandingRank
         AttributeType: N
       GlobalSecondaryIndexes:
       - IndexName: WeekRegion-Rank-Index
         KeySchema:
         - AttributeName: WeekRegion
           KeyType: HASH
-        - AttributeName: Rank
+        - AttributeName: StandingRank
           KeyType: RANGE
         Projection:
           ProjectionType: ALL
@@ -95,7 +95,7 @@ Resources:
           ReadCapacityUnits: '5'
           WriteCapacityUnits: '1'
       KeySchema:
-      - AttributeName: id
+      - AttributeName: WeekRegionName
         KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
