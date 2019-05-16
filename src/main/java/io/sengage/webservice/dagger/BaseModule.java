@@ -13,6 +13,7 @@ import com.google.gson.GsonBuilder;
 
 import io.sengage.webservice.function.GetStandings;
 import io.sengage.webservice.function.PutStandings;
+import io.sengage.webservice.function.SendFeedback;
 import io.sengage.webservice.persistence.DDBStandingDataProvider;
 import io.sengage.webservice.persistence.StandingDataProvider;
 import io.sengage.webservice.router.LambdaRouter;
@@ -38,7 +39,12 @@ public class BaseModule {
 		    		.className(PutStandings.class.getName())
 		    		.httpMethod("PUT")
 		    		.pattern(Pattern.compile("^/standings$"))
-		    		.build());
+		    		.build())
+    		.registerActivity(Resource.builder()
+    				.className(SendFeedback.class.getName())
+    				.httpMethod("POST")
+    				.pattern(Pattern.compile("^/feedback$"))
+    				.build());
 	}
 	
 	@Provides

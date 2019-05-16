@@ -52,12 +52,17 @@ public final class RequestHandler extends BaseLambda<ServerlessInput, Serverless
 		 	logger.log("RequestHandler#handleRequest(): JWT token verification error: " + e.getMessage());
 			output.setStatusCode(HttpStatus.SC_UNAUTHORIZED);
         	logException(logger, e);
+            output.setBody("Caller is not authorized to perform that action");
+		} catch (IllegalArgumentException e) {
+			logger.log("RequestHandler#handleRequest(): unexpected exception thrown during execution " + e.getMessage());
+        	output.setStatusCode(HttpStatus.SC_BAD_REQUEST);
+        	logException(logger, e);
             output.setBody(e.getMessage());
 		} catch (Exception e) {
         	logger.log("RequestHandler#handleRequest(): unexpected exception thrown during execution " + e.getMessage());
         	output.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         	logException(logger, e);
-            output.setBody(e.getMessage());
+            output.setBody("Encountered unexpected error while processing request");
 		}
 		
         output.setHeaders(getOutputHeaders());

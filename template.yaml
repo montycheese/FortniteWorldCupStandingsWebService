@@ -47,6 +47,20 @@ Resources:
           ProvisionedThroughput:
             ReadCapacityUnits: "5"
             WriteCapacityUnits: "1"
+  FeedbackTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: "id"
+        AttributeType: "S"
+      KeySchema:
+      - AttributeName: "id"
+        KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName: Feedback
+      
 # Http API LAMBDAS
   LambdaFunction:
     Type: 'AWS::Serverless::Function'

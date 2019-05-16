@@ -56,7 +56,7 @@ Resources:
     Type: AWS::IAM::Role
   LambdaFunction:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/0543e5c066d56b325a10e48cb24222ad
+      CodeUri: s3://deployment-us-east-1-lambdas-1/f0a85989f9edeacab9e3d91e8a62d47b
       Events:
         FortniteApi:
           Properties:
