@@ -122,6 +122,12 @@ Resources:
       Handler: standings_updater.handler
       Runtime: python3.6
       Role: !GetAtt DefaultLambdaInvocationRole.Arn
+      Events:
+        ScheduledUpdateEvent:
+          Type: Schedule
+          Properties:
+              Schedule: rate(30 minutes)
+              Input: "{ \"solos\": false, \"week\": 2, \"pause\": false }"
 
 
 Outputs:
