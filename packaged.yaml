@@ -54,9 +54,22 @@ Resources:
           Version: '2012-10-17'
         PolicyName: LambdaInvocationRolePolicy
     Type: AWS::IAM::Role
+  FeedbackTable:
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName: Feedback
+    Type: AWS::DynamoDB::Table
   LambdaFunction:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/f0a85989f9edeacab9e3d91e8a62d47b
+      CodeUri: s3://deployment-us-east-1-lambdas-1/d4fd54bd764b5fbdaeab8110f456ee95
       Events:
         FortniteApi:
           Properties:
@@ -102,4 +115,16 @@ Resources:
         WriteCapacityUnits: 1
       TableName: Standings
     Type: AWS::DynamoDB::Table
+  StandingsUpdater:
+    Properties:
+      CodeUri: s3://deployment-us-east-1-lambdas-1/9edb090ad10ec5f3879d3a0ed4c8555f
+      Handler: standings_updater.handler
+      MemorySize: 256
+      Role:
+        Fn::GetAtt:
+        - DefaultLambdaInvocationRole
+        - Arn
+      Runtime: python3.6
+      Timeout: 800
+    Type: AWS::Serverless::Function
 Transform: AWS::Serverless-2016-10-31

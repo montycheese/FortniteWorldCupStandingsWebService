@@ -112,6 +112,18 @@ Resources:
             - dynamodb:BatchWriteItem
             Resource: "*"
 
+# Worker lambdas
+  StandingsUpdater:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Timeout: 800
+      MemorySize: 256
+      CodeUri: ./python/build    
+      Handler: standings_updater.handler
+      Runtime: python3.6
+      Role: !GetAtt DefaultLambdaInvocationRole.Arn
+
+
 Outputs:
   LambdaFunction:
     Description: "Lambda function ARN"
