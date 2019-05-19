@@ -16,7 +16,7 @@ REGION_CODE_TO_REGION = {
 def handler(event, context):
   print(json.dumps(event))
   if event["pause"] == True or event["pause"] == "True":
-	return
+    exit()
   week = int(event["week"])
   solos = event["solos"] == "True" or event["solos"] == True
 
@@ -41,12 +41,16 @@ def handler(event, context):
         print("No payout for entry: " + str(entry["displayNames"]))
       standing["points"] = int(entry["pointsEarned"])
       standings.append(standing)
-  print("Sending {} standings to server".format(len(standings)))
-  requests.put("{}/standings".format(SENGAGE_API_URL), data=json.dumps({"standings" : standings}))
+    print("Sending {} standings to server".format(len(standings)))
+    requests.put("{}/standings".format(SENGAGE_API_URL), data=json.dumps({"standings" : standings}))
 
 def get_epic_entries(url):
   request = requests.get(url)
   content = json.loads(request.text)
-  entries = content["entries"]
+  try:
+    entries = content["entries"]
+  except KeyError:
+    print("No entries available from API, shutting down")
+    exit()
   return entries
  

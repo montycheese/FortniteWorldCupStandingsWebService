@@ -16,7 +16,7 @@ REGION_CODE_TO_REGION = {
 def handler(event, context):
   print(json.dumps(event))
   if event["pause"] == True or event["pause"] == "True":
-    return
+    exit()
   week = int(event["week"])
   solos = event["solos"] == "True" or event["solos"] == True
 
