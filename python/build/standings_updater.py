@@ -25,6 +25,9 @@ def handler(event, context):
     url = URL_TEMPLATE.format(week, k, week, k)
     print("Fetching Standings from EPIC for Week {}, Region {}".format(week, v))
     entries = get_epic_entries(url)
+    if len(entries) == 0:
+      print("No entries available for region: " + v)
+      continue
     for entry in entries:
       standing = dict()
       standing["name1"] = entry["displayNames"][0]
@@ -50,7 +53,7 @@ def get_epic_entries(url):
   try:
     entries = content["entries"]
   except KeyError:
-    print("No entries available from API, shutting down")
-    exit()
+    print("No entries available from API at url: " + url)
+    return []
   return entries
  

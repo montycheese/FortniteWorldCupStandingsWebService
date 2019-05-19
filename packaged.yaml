@@ -117,12 +117,12 @@ Resources:
     Type: AWS::DynamoDB::Table
   StandingsUpdater:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/d31c39175f61cae08029eec56c43fe84
+      CodeUri: s3://deployment-us-east-1-lambdas-1/47a29aebf566b5dadc2f00e284b935e6
       Events:
         ScheduledUpdateEvent:
           Properties:
-            Input: '{ "solos": false, "week": 2, "pause": false }'
-            Schedule: rate(30 minutes)
+            Input: '{ "solos": false, "week": 6, "pause": false }'
+            Schedule: rate(2 hours)
           Type: Schedule
       Handler: standings_updater.handler
       MemorySize: 256
