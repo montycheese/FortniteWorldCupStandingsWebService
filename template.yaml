@@ -21,6 +21,7 @@ Resources:
   StandingsTable:
     Type: AWS::DynamoDB::Table
     Properties:
+      BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
       - AttributeName: "WeekRegionName"
         AttributeType: "S"
@@ -31,9 +32,6 @@ Resources:
       KeySchema:
       - AttributeName: "WeekRegionName"
         KeyType: "HASH"
-      ProvisionedThroughput:
-        ReadCapacityUnits: 1
-        WriteCapacityUnits: 1
       TableName: Standings
       GlobalSecondaryIndexes:
         - IndexName: "WeekRegion-Rank-Index"
@@ -44,9 +42,6 @@ Resources:
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
-          ProvisionedThroughput:
-            ReadCapacityUnits: "5"
-            WriteCapacityUnits: "1"
   FeedbackTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -126,8 +121,8 @@ Resources:
         ScheduledUpdateEvent:
           Type: Schedule
           Properties:
-              Schedule: rate(2 hours)
-              Input: "{ \"solos\": false, \"week\": 6, \"pause\": false }"
+              Schedule: rate(5 minutes)
+              Input: "{ \"solos\": true, \"week\": 7, \"pause\": false }"
 
 
 Outputs:
