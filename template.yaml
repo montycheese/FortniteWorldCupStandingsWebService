@@ -122,7 +122,7 @@ Resources:
           Type: Schedule
           Properties:
               Schedule: rate(5 minutes)
-              Input: "{ \"solos\": true, \"week\": 7, \"pause\": false }"
+              Input: "{ \"solos\": false, \"week\": 8, \"pause\": false }"
 
 
 Outputs:
