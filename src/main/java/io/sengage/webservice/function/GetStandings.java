@@ -8,8 +8,11 @@ import org.apache.http.HttpStatus;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 
+import io.sengage.webservice.auth.JwtUtils;
+import io.sengage.webservice.auth.TwitchJWTField;
 import io.sengage.webservice.dagger.DaggerExtensionComponent;
 import io.sengage.webservice.dagger.ExtensionComponent;
 import io.sengage.webservice.model.ListStandingsResult;
@@ -29,6 +32,9 @@ public class GetStandings extends BaseLambda<ServerlessInput, ServerlessOutput> 
 	StandingDataProvider standingDataProvider;
 	
 	@Inject
+	JwtUtils jwtUtils;
+	
+	@Inject
 	Gson gson;
 	
 	public GetStandings() {
@@ -39,15 +45,20 @@ public class GetStandings extends BaseLambda<ServerlessInput, ServerlessOutput> 
 	@Override
 	public ServerlessOutput handleRequest(ServerlessInput serverlessInput, Context context) {
 		logger = context.getLogger();
-		logger.log("GetExtensionData() input:" + serverlessInput);
-		
 		Map<String, String> queryParams = serverlessInput.getQueryStringParameters();
+		
+		String token = parseAuthTokenFromHeaders(serverlessInput.getHeaders());
+		DecodedJWT jwt = jwtUtils.decode(token);
+		
+
+		logger.log(String.format("Sent by user [%s] watching channel [%s]",
+				jwt.getClaim(TwitchJWTField.USER_ID.getValue()).asString(),
+				jwt.getClaim(TwitchJWTField.CHANNEL_ID.getValue()).asString()));
 		
 		int week = Integer.parseInt(queryParams.get(WEEK_QUERY_PARAM_KEY));
 		String region = queryParams.get(REGION_QUERY_PARAM_KEY);
 		
-		// TODO MAKE IT 1
-		if (week < 0 || week > 8) {
+		if (week < 1 || week > 8) {
 			throw new IllegalArgumentException("Week must be between 1-8");
 		}
 		

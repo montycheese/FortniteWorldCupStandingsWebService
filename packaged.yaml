@@ -69,7 +69,7 @@ Resources:
     Type: AWS::DynamoDB::Table
   LambdaFunction:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/d4fd54bd764b5fbdaeab8110f456ee95
+      CodeUri: s3://deployment-us-east-1-lambdas-1/0712ae665bdf25ef1c0dfc65b77cf6a2
       Events:
         FortniteApi:
           Properties:
@@ -95,6 +95,7 @@ Resources:
         AttributeType: S
       - AttributeName: StandingRank
         AttributeType: N
+      BillingMode: PAY_PER_REQUEST
       GlobalSecondaryIndexes:
       - IndexName: WeekRegion-Rank-Index
         KeySchema:
@@ -104,25 +105,19 @@ Resources:
           KeyType: RANGE
         Projection:
           ProjectionType: ALL
-        ProvisionedThroughput:
-          ReadCapacityUnits: '5'
-          WriteCapacityUnits: '1'
       KeySchema:
       - AttributeName: WeekRegionName
         KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: 1
-        WriteCapacityUnits: 1
       TableName: Standings
     Type: AWS::DynamoDB::Table
   StandingsUpdater:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/47a29aebf566b5dadc2f00e284b935e6
+      CodeUri: s3://deployment-us-east-1-lambdas-1/7720179bab4c54f91e43e0228ed69497
       Events:
         ScheduledUpdateEvent:
           Properties:
-            Input: '{ "solos": false, "week": 6, "pause": false }'
-            Schedule: rate(2 hours)
+            Input: '{ "solos": true, "week": 9, "pause": false }'
+            Schedule: rate(5 minutes)
           Type: Schedule
       Handler: standings_updater.handler
       MemorySize: 256

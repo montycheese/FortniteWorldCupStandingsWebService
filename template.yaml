@@ -15,7 +15,7 @@ Globals:
       Variables:
         ExtensionOwnerTwitchId: "79606633"
         ClientId: "3wzomqpieq4jiyl0ivzjd2ajrewp5s"
-        ExtensionVersion: "0.0.1"
+        ExtensionVersion: "0.0.4"
 
 Resources:
   StandingsTable:
@@ -122,7 +122,7 @@ Resources:
           Type: Schedule
           Properties:
               Schedule: rate(5 minutes)
-              Input: "{ \"solos\": false, \"week\": 8, \"pause\": false }"
+              Input: "{ \"solos\": true, \"week\": 9, \"pause\": false }"
 
 
 Outputs:

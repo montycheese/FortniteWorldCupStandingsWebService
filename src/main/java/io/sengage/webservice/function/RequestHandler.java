@@ -30,9 +30,6 @@ public final class RequestHandler extends BaseLambda<ServerlessInput, Serverless
 	@Override
 	public ServerlessOutput handleRequest(ServerlessInput serverlessInput, Context context) {
 		logger = context.getLogger();
-		logger.log("HTTP method " + serverlessInput.getHttpMethod());
-		logger.log("serverlessinput path:" + serverlessInput.getPath());
-		logger.log("Path params: " + serverlessInput.getPathParameters());
 		logger.log("query params: " + serverlessInput.getQueryStringParameters());
 		
 		ServerlessOutput output = new ServerlessOutput();;
