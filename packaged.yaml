@@ -13,7 +13,7 @@ Globals:
       Variables:
         ClientId: 3wzomqpieq4jiyl0ivzjd2ajrewp5s
         ExtensionOwnerTwitchId: '79606633'
-        ExtensionVersion: 0.0.1
+        ExtensionVersion: 0.0.4
 Outputs:
   LambdaFunction:
     Description: Lambda function ARN
@@ -69,7 +69,7 @@ Resources:
     Type: AWS::DynamoDB::Table
   LambdaFunction:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/0712ae665bdf25ef1c0dfc65b77cf6a2
+      CodeUri: s3://deployment-us-east-1-lambdas-1/82ef7402be188df97f0e740ea30de93f
       Events:
         FortniteApi:
           Properties:
@@ -112,7 +112,7 @@ Resources:
     Type: AWS::DynamoDB::Table
   StandingsUpdater:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/7720179bab4c54f91e43e0228ed69497
+      CodeUri: s3://deployment-us-east-1-lambdas-1/8934ca167076b096cb845190f39a2603
       Events:
         ScheduledUpdateEvent:
           Properties:

@@ -58,7 +58,7 @@ public class GetStandings extends BaseLambda<ServerlessInput, ServerlessOutput> 
 		int week = Integer.parseInt(queryParams.get(WEEK_QUERY_PARAM_KEY));
 		String region = queryParams.get(REGION_QUERY_PARAM_KEY);
 		
-		if (week < 1 || week > 8) {
+		if (week < 1 || week > 10) {
 			throw new IllegalArgumentException("Week must be between 1-8");
 		}
 		
