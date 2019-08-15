@@ -69,7 +69,7 @@ Resources:
     Type: AWS::DynamoDB::Table
   LambdaFunction:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/82ef7402be188df97f0e740ea30de93f
+      CodeUri: s3://deployment-us-east-1-lambdas-1/1324f9dbb590bb46362293ff0c3211e8
       Events:
         FortniteApi:
           Properties:
@@ -112,11 +112,11 @@ Resources:
     Type: AWS::DynamoDB::Table
   StandingsUpdater:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/8934ca167076b096cb845190f39a2603
+      CodeUri: s3://deployment-us-east-1-lambdas-1/346f68215af1a3476426c2a38a3ceadb
       Events:
         ScheduledUpdateEvent:
           Properties:
-            Input: '{ "solos": true, "week": 9, "pause": false }'
+            Input: '{ "solos": false, "week": 10, "pause": false }'
             Schedule: rate(5 minutes)
           Type: Schedule
       Handler: standings_updater.handler
@@ -128,4 +128,28 @@ Resources:
       Runtime: python3.6
       Timeout: 800
     Type: AWS::Serverless::Function
+  TournamentStandingsTable:
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: TournamentWeekRegionName
+        AttributeType: S
+      - AttributeName: TournamentWeekRegion
+        AttributeType: S
+      - AttributeName: StandingRank
+        AttributeType: N
+      BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes:
+      - IndexName: TournamentWeekRegion-StandingRank-Index
+        KeySchema:
+        - AttributeName: TournamentWeekRegion
+          KeyType: HASH
+        - AttributeName: StandingRank
+          KeyType: RANGE
+        Projection:
+          ProjectionType: ALL
+      KeySchema:
+      - AttributeName: TournamentWeekRegionName
+        KeyType: HASH
+      TableName: TournamentStandings
+    Type: AWS::DynamoDB::Table
 Transform: AWS::Serverless-2016-10-31

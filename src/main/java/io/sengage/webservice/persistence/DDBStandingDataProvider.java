@@ -65,6 +65,7 @@ public class DDBStandingDataProvider implements StandingDataProvider {
 	    return ListStandingsResult.builder()
 	    		.entries(standings)
 	    		.region(region)
+	    		.title(String.format("WEEK %d %s", week, solos ? "SOLOS" : "DUOS"))
 	    		.week(week)
 	    		.solos(solos)
 	    		.build();

@@ -16,20 +16,27 @@ import io.sengage.webservice.auth.TwitchJWTField;
 import io.sengage.webservice.dagger.DaggerExtensionComponent;
 import io.sengage.webservice.dagger.ExtensionComponent;
 import io.sengage.webservice.model.ListStandingsResult;
+import io.sengage.webservice.model.ListTournamentStandingsResult;
 import io.sengage.webservice.model.Region;
 import io.sengage.webservice.model.ServerlessInput;
 import io.sengage.webservice.model.ServerlessOutput;
+import io.sengage.webservice.model.Tournament;
 import io.sengage.webservice.persistence.StandingDataProvider;
+import io.sengage.webservice.persistence.TournamentStandingDataProvider;
 
 public class GetStandings extends BaseLambda<ServerlessInput, ServerlessOutput> {
 
 	private static final String WEEK_QUERY_PARAM_KEY = "week";
 	private static final String REGION_QUERY_PARAM_KEY = "region";
+	private static final String TOURNAMENT_QUERY_PARAM_KEY = "tournament";
 	
 	private LambdaLogger logger;
 
 	@Inject
 	StandingDataProvider standingDataProvider;
+	
+	@Inject
+	TournamentStandingDataProvider tournamentStandingDataProvider;
 	
 	@Inject
 	JwtUtils jwtUtils;
@@ -55,11 +62,56 @@ public class GetStandings extends BaseLambda<ServerlessInput, ServerlessOutput> 
 				jwt.getClaim(TwitchJWTField.USER_ID.getValue()).asString(),
 				jwt.getClaim(TwitchJWTField.CHANNEL_ID.getValue()).asString()));
 		
+		String tournamentString = queryParams.get(TOURNAMENT_QUERY_PARAM_KEY);
+		Tournament tournament;
+		
+		if (tournamentString == null) {
+			tournament = Tournament.WORLD_CUP_QUALIFIERS; // Backwards compatiable
+		} else {
+			tournament = Tournament.from(tournamentString);
+		}
+		
+		switch(tournament) {
+		case WORLD_CUP_QUALIFIERS:
+			return handleFortniteWorldCupQualifiers(queryParams);
+		case CHAMPION_SERIES_QUALIFIERS:
+			return handleChampionSeriesQualifiers(queryParams);
+		default:
+			throw new IllegalArgumentException("Unsupported tournament: " + tournament);
+		}
+	}
+	
+	private ServerlessOutput handleChampionSeriesQualifiers(Map<String, String> queryParams) {
+		int week = Integer.parseInt(queryParams.get(WEEK_QUERY_PARAM_KEY));
+		String region = queryParams.get(REGION_QUERY_PARAM_KEY);
+		
+		// use weeek 0 for testing
+		if (week < 0 || week > 5) {
+			throw new IllegalArgumentException("Week must be between 1-5");
+		}
+		
+		ListTournamentStandingsResult result = tournamentStandingDataProvider
+				.getStandings(Tournament.CHAMPION_SERIES_QUALIFIERS, week, Region.from(region));
+		
+		if (week == 0) {
+			week = 1;
+		}
+		result.setTitle(String.format("%s WEEK %d %s", Tournament.CHAMPION_SERIES_QUALIFIERS.getFriendlyName().toUpperCase(),
+				week, result.getSquadType().name().toUpperCase()));
+		
+		return ServerlessOutput.builder()
+        		.headers(getOutputHeaders())
+        		.statusCode(HttpStatus.SC_OK)
+        		.body(gson.toJson(result, ListTournamentStandingsResult.class))
+        		.build();
+	}
+	
+	private ServerlessOutput handleFortniteWorldCupQualifiers(Map<String, String> queryParams) {
 		int week = Integer.parseInt(queryParams.get(WEEK_QUERY_PARAM_KEY));
 		String region = queryParams.get(REGION_QUERY_PARAM_KEY);
 		
 		if (week < 1 || week > 10) {
-			throw new IllegalArgumentException("Week must be between 1-8");
+			throw new IllegalArgumentException("Week must be between 1-10");
 		}
 		
 		ListStandingsResult result = standingDataProvider.getStandings(week, Region.valueOf(region));

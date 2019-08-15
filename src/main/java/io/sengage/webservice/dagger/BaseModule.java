@@ -15,7 +15,9 @@ import io.sengage.webservice.function.GetStandings;
 import io.sengage.webservice.function.PutStandings;
 import io.sengage.webservice.function.SendFeedback;
 import io.sengage.webservice.persistence.DDBStandingDataProvider;
+import io.sengage.webservice.persistence.DDBTournamentStandingDataProvider;
 import io.sengage.webservice.persistence.StandingDataProvider;
+import io.sengage.webservice.persistence.TournamentStandingDataProvider;
 import io.sengage.webservice.router.LambdaRouter;
 import io.sengage.webservice.router.Resource;
 import io.sengage.webservice.utils.gson.InstantTypeConverter;
@@ -60,6 +62,12 @@ public class BaseModule {
 	@Singleton
 	static StandingDataProvider provideStandingDataProvider(DynamoDBMapper mapper) {
 		return new DDBStandingDataProvider(mapper);
+	}
+	
+	@Provides
+	@Singleton
+	static TournamentStandingDataProvider provideTournamentStandingDataProvider(DynamoDBMapper mapper) {
+		return new DDBTournamentStandingDataProvider(mapper);
 	}
 	
 	@Provides

@@ -13,4 +13,5 @@ public class ListStandingsResult {
 	private int week;
 	private boolean solos;
 	Region region;
+	private String title;
 }
