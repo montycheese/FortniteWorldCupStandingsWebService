@@ -69,7 +69,7 @@ Resources:
     Type: AWS::DynamoDB::Table
   LambdaFunction:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/1324f9dbb590bb46362293ff0c3211e8
+      CodeUri: s3://deployment-us-east-1-lambdas-1/89cad7a54810b27a4f6db560381003f8
       Events:
         FortniteApi:
           Properties:
@@ -112,7 +112,7 @@ Resources:
     Type: AWS::DynamoDB::Table
   StandingsUpdater:
     Properties:
-      CodeUri: s3://deployment-us-east-1-lambdas-1/346f68215af1a3476426c2a38a3ceadb
+      CodeUri: s3://deployment-us-east-1-lambdas-1/c0cbc2e3c97acd1913f9153ab5d99271
       Events:
         ScheduledUpdateEvent:
           Properties:

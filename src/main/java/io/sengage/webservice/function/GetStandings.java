@@ -64,7 +64,6 @@ public class GetStandings extends BaseLambda<ServerlessInput, ServerlessOutput> 
 		
 		String tournamentString = queryParams.get(TOURNAMENT_QUERY_PARAM_KEY);
 		Tournament tournament;
-		
 		if (tournamentString == null) {
 			tournament = Tournament.WORLD_CUP_QUALIFIERS; // Backwards compatiable
 		} else {
